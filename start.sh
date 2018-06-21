@@ -7,7 +7,8 @@ chmod +x ./mvnw;
 cd ..;
 
 #build frontend
-cd ticketscan-frontend
+cd ticketscan-frontend;
+npm install;
 npm run build;
 cd ..;
 

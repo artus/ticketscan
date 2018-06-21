@@ -19,7 +19,7 @@ services:
     ports:
       - "80:80"       # http
     volumes:
-      - ./ticketscan-frontend/:/var/www/public:ro
+      - ./ticketscan-frontend:/var/www/:ro
 
   db:
     image: postgres
