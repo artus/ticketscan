@@ -4,6 +4,12 @@
 cd ticketscan-backend;
 chmod +x ./mvnw;
 ./mvnw package -Dmaven.test.skip=true;
+cd ..;
+
+#build frontend
+cd ticketscan-frontend
+npm run build;
+cd ..;
 
 # Start docker-compose
 docker-compose build;

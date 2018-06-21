@@ -11,6 +11,7 @@ public class Ticket {
     @GeneratedValue()
     private String id;
     private String firstName, lastName, email;
+    private boolean scanned;
 
     public Ticket() {
         // Do nothing
@@ -47,4 +48,9 @@ public class Ticket {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Boolean getScanned() { return this.scanned; }
+    public Boolean isScanned() { return this.scanned; }
+
+    public void setScanned(boolean scanned) { this.scanned = scanned; }
 }

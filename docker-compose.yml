@@ -1,13 +1,25 @@
 version: '3.1'
 
+volumes: 
+  postgresql-data:
+
 services:
-  web:
+  rest:
     build: ./ticketscan-backend/
     restart: always
     ports:
       - 8080:8080
     depends_on:
       - "db"
+
+  web:
+    image: nginx:stable-alpine
+    depends_on:
+      - "rest"
+    ports:
+      - "80:80"       # http
+    volumes:
+      - ./ticketscan-frontend/:/var/www/public:ro
 
   db:
     image: postgres
@@ -16,6 +28,8 @@ services:
       POSTGRES_USER: ticketscan
       POSTGRES_PASSWORD: ticketscan
       POSTGRES_DB: ticketscan
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
 
   adminer:
     image: adminer
