@@ -39,14 +39,20 @@ public class TicketController {
 
     @PostMapping("/{id}")
     public ResponseEntity scanTicket(@PathVariable String id) {
-        Ticket retrievedTicket = this.ticketRepository.findById(id).get();
-        Ticket savedTicket = new Ticket();
-        if (retrievedTicket.isScanned()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
+        Optional<Ticket> optionalTicket = this.ticketRepository.findById(id);
+        Ticket concreteTicket;
+        if (optionalTicket.isPresent()) concreteTicket = optionalTicket.get();
         else {
-            retrievedTicket.setScanned(true);
-            savedTicket = this.ticketRepository.save(retrievedTicket);
+            optionalTicket = this.ticketRepository.findByUserId(id);
+            if (optionalTicket.isPresent()) concreteTicket = optionalTicket.get();
+            else return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(retrievedTicket, HttpStatus.OK);
+
+        concreteTicket.setScanned(true);
+        Ticket savedTicket = this.ticketRepository.save(concreteTicket);
+
+        return ResponseEntity.ok(savedTicket);
     }
 
     @DeleteMapping("/{id}")

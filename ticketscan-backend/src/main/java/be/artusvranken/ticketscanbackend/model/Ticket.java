@@ -11,8 +11,8 @@ public class Ticket {
 
     @Id
     @GeneratedValue()
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String id;
+    private Long id;
+    private String userId;
     private String firstName, lastName, email;
     private boolean scanned;
 
@@ -20,12 +20,20 @@ public class Ticket {
         // Do nothing
     }
 
-    public String getId() {
-        return id;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(String id) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
