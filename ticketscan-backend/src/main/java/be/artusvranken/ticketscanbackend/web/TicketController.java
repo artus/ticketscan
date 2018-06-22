@@ -40,7 +40,7 @@ public class TicketController {
     @PostMapping("/{id}")
     public ResponseEntity scanTicket(@PathVariable String id) {
 
-        Optional<Ticket> optionalTicket = this.ticketRepository.findById(id);
+        Optional<Ticket> optionalTicket = this.ticketRepository.findById(Long.parseLong(id));
         Ticket concreteTicket;
         if (optionalTicket.isPresent()) concreteTicket = optionalTicket.get();
         else {

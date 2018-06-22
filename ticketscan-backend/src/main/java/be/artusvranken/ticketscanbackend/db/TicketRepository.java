@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface TicketRepository extends JpaRepository<Ticket, String> {
 
+    public Optional<Ticket> findById(Long id);
     public Optional<Ticket> findByUserId(String userId);
 
 }
