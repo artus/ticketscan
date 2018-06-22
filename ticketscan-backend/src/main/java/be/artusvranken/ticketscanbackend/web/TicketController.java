@@ -10,18 +10,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
+@RequestMapping("/ticket")
 public class TicketController {
 
     @Autowired
     TicketRepository ticketRepository;
 
-    @GetMapping("/ticket")
+    @GetMapping("/")
     public ResponseEntity getAll() {
         return ResponseEntity.ok(this.ticketRepository.findAll());
     }
 
-    @GetMapping("/ticket/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity getTicket(@PathVariable String id) {
         Optional<Ticket> retrievedTicket = this.ticketRepository.findById(id);
 
@@ -29,13 +31,13 @@ public class TicketController {
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(path= "/ticket", consumes = "application/json", produces = "application/json")
+    @PostMapping("/")
     public ResponseEntity addTicket(@RequestBody Ticket ticket) {
         Ticket savedTicket = this.ticketRepository.save(ticket);
         return ResponseEntity.ok(savedTicket);
     }
 
-    @PostMapping("/ticket/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity scanTicket(@PathVariable String id) {
         Ticket retrievedTicket = this.ticketRepository.findById(id).get();
         Ticket savedTicket = new Ticket();
@@ -45,5 +47,15 @@ public class TicketController {
             savedTicket = this.ticketRepository.save(retrievedTicket);
         }
         return new ResponseEntity<>(retrievedTicket, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteTicket(@PathVariable String id) {
+        Optional<Ticket> retrievedTicket = this.ticketRepository.findById(id);
+        if (retrievedTicket.isPresent()) {
+            this.ticketRepository.delete(retrievedTicket.get());
+            return ResponseEntity.ok(retrievedTicket);
+        }
+        else return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 }
