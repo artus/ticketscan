@@ -58,6 +58,8 @@ public class TicketController {
             else return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
+        if (concreteTicket.isScanned()) return new ResponseEntity(HttpStatus.CONFLICT);
+
         concreteTicket.setScanned(true);
         Ticket savedTicket = this.ticketRepository.save(concreteTicket);
 
