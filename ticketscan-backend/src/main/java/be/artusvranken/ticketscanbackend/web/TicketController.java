@@ -29,9 +29,10 @@ public class TicketController {
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/ticket")
+    @PostMapping(path= "/ticket", consumes = "application/json", produces = "application/json")
     public ResponseEntity addTicket(@RequestBody Ticket ticket) {
-        return ResponseEntity.ok(this.ticketRepository.save(ticket));
+        Ticket savedTicket = this.ticketRepository.save(ticket);
+        return ResponseEntity.ok(savedTicket);
     }
 
     @PostMapping("/ticket/{id}")
