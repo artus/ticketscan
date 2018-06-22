@@ -1,5 +1,7 @@
 package be.artusvranken.ticketscanbackend.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,6 +11,7 @@ public class Ticket {
 
     @Id
     @GeneratedValue()
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
     private String firstName, lastName, email;
     private boolean scanned;
