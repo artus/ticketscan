@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 @RestController
 public class TicketController {
 
@@ -20,7 +23,10 @@ public class TicketController {
 
     @GetMapping("/ticket/{id}")
     public ResponseEntity getTicket(@PathVariable String id) {
-        return ResponseEntity.ok(this.ticketRepository.findById(id).get());
+        Optional<Ticket> retrievedTicket = this.ticketRepository.findById(id);
+
+        if (retrievedTicket.isPresent()) return ResponseEntity.ok(retrievedTicket.get());
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/ticket")
