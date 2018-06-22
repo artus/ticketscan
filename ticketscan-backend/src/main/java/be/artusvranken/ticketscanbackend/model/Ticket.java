@@ -32,7 +32,7 @@ public class Ticket {
         return this.userId;
     }
 
-    public void setUserId(String id) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
