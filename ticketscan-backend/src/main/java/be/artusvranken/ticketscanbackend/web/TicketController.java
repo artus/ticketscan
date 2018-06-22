@@ -2,6 +2,7 @@ package be.artusvranken.ticketscanbackend.web;
 
 import be.artusvranken.ticketscanbackend.db.TicketRepository;
 import be.artusvranken.ticketscanbackend.model.Ticket;
+import ch.qos.logback.core.CoreConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,9 +41,17 @@ public class TicketController {
     @PostMapping("/{id}")
     public ResponseEntity scanTicket(@PathVariable String id) {
 
-        Optional<Ticket> optionalTicket = this.ticketRepository.findById(Long.parseLong(id));
+        Optional<Ticket> optionalTicket = null;
         Ticket concreteTicket;
-        if (optionalTicket.isPresent()) concreteTicket = optionalTicket.get();
+
+        try {
+            optionalTicket =  this.ticketRepository.findById(Long.parseLong(id));
+        }
+        catch (Exception e) {
+            // Heh
+        }
+
+        if (optionalTicket != null && optionalTicket.isPresent()) concreteTicket = optionalTicket.get();
         else {
             optionalTicket = this.ticketRepository.findByUserId(id);
             if (optionalTicket.isPresent()) concreteTicket = optionalTicket.get();
