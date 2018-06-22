@@ -14,4 +14,4 @@ cd ..;
 
 # Start docker-compose
 docker-compose build;
-docker-compose up;
+docker-compose up -d;

@@ -13,13 +13,13 @@ services:
       - "db"
 
   web:
-    image: nginx:stable-alpine
+    image: httpd:2.4.33-alpine
     depends_on:
       - "rest"
     ports:
-      - "80:80"       # http
+      - "80:80"
     volumes:
-      - ./ticketscan-frontend:/var/www/:ro
+      - ./ticketscan-frontend:/usr/local/apache2/htdocs/:ro
 
   db:
     image: postgres
