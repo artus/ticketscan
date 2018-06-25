@@ -5,7 +5,9 @@
             <h2>Scan tickets</h2>
         </div>
 
-        <qr-reader @decode="scanTicket"></qr-reader>
+        <div v-if="scanning">
+            <qr-reader @decode="scanTicket"></qr-reader>
+        </div>
 
     </div>
 </template>
@@ -23,9 +25,17 @@ export default {
     components: {
         'qr-reader' : QrcodeReader
     },
+    data() {
+        return {
+            scanning: true 
+        }
+    },
     methods: {
         scanTicket(id) {
+            this.scanning = false;
+            console.log("Scanning " + id);
             this.ticketService.scanTicket(id, function() { alert("Scanned!")});
+            setTimeout((function(){ this.scanning = true }).bind(this), 1000);
         }
     }
 }
