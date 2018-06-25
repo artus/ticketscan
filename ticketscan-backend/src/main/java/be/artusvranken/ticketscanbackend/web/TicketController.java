@@ -34,6 +34,9 @@ public class TicketController {
 
     @PostMapping("/")
     public ResponseEntity addTicket(@RequestBody Ticket ticket) {
+		
+		if (this.ticketRepository.findByUserId(ticket.getUserId()).isPresent()) return new ResponseEntity(HttpStatus.CONFLICT);
+
         Ticket savedTicket = this.ticketRepository.save(ticket);
         return ResponseEntity.ok(savedTicket);
     }
@@ -68,11 +71,24 @@ public class TicketController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteTicket(@PathVariable String id) {
-        Optional<Ticket> retrievedTicket = this.ticketRepository.findById(id);
-        if (retrievedTicket.isPresent()) {
-            this.ticketRepository.delete(retrievedTicket.get());
-            return ResponseEntity.ok(retrievedTicket);
+        Optional<Ticket> optionalTicket = null;
+        Ticket concreteTicket;
+
+        try {
+            optionalTicket =  this.ticketRepository.findById(Long.parseLong(id));
         }
-        else return new ResponseEntity(HttpStatus.NOT_FOUND);
+        catch (Exception e) {
+            // Heh
+        }
+
+        if (optionalTicket != null && optionalTicket.isPresent()) concreteTicket = optionalTicket.get();
+        else {
+            optionalTicket = this.ticketRepository.findByUserId(id);
+            if (optionalTicket.isPresent()) concreteTicket = optionalTicket.get();
+            else return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        this.ticketRepository.delete(concreteTicket);
+		return ResponseEntity.ok(concreteTicket);
     }
 }
